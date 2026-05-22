@@ -1,0 +1,80 @@
+import threading
+import random
+import time
+
+from models import insert_log
+
+
+apis = [
+    "/login",
+    "/products",
+    "/orders",
+    "/payments",
+    "/profile",
+    "/checkout",
+    "/analytics"
+]
+
+statuses = [
+    "success",
+    "failure"
+]
+
+severities = [
+    "INFO",
+    "WARNING",
+    "ERROR",
+    "CRITICAL"
+]
+
+
+def generate_logs():
+
+    while True:
+
+        api = random.choice(apis)
+
+        status = random.choices(
+            statuses,
+            weights=[80, 20]
+        )[0]
+
+        response_time = random.randint(
+            50,
+            1200
+        )
+
+        severity = "INFO"
+
+        if response_time > 800:
+            severity = "CRITICAL"
+
+        elif response_time > 500:
+            severity = "ERROR"
+
+        elif response_time > 300:
+            severity = "WARNING"
+
+        insert_log(
+            api,
+            status,
+            severity,
+            response_time
+        )
+
+        print(
+            f"Inserted: {api} | {status}"
+        )
+
+        time.sleep(2)
+
+
+def start_simulator():
+
+    thread = threading.Thread(
+        target=generate_logs
+    )
+
+    thread.daemon = True
+
+    thread.start()

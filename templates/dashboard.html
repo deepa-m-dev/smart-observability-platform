@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Smart Observability Dashboard
+</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial;
+    background:#0f172a;
+    color:white;
+}
+
+.container{
+    width:90%;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    padding:20px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#1e293b;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+}
+
+form{
+    margin-top:30px;
+    background:#1e293b;
+    padding:20px;
+    border-radius:10px;
+}
+
+input,select,button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+}
+
+button{
+    background:#38bdf8;
+    border:none;
+    cursor:pointer;
+}
+
+.charts{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
+
+.charts img{
+    width:100%;
+    border-radius:10px;
+}
+
+table{
+    width:100%;
+    margin-top:30px;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #334155;
+    padding:10px;
+}
+
+.failure{
+    color:red;
+}
+
+.success{
+    color:lightgreen;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>
+Smart Observability Dashboard
+</h1>
+
+<div class="cards">
+
+<div class="card">
+<h2 id="totalLogs">0</h2>
+<p>Total Logs</p>
+</div>
+
+<div class="card">
+<h2 id="successRate">0%</h2>
+<p>Success Rate</p>
+</div>
+
+<div class="card">
+<h2 id="failureRate">0%</h2>
+<p>Failure Rate</p>
+</div>
+
+<div class="card">
+<h2 id="health">Healthy</h2>
+<p>System Health</p>
+</div>
+
+</div>
+
+<!-- INSIGHTS SECTION -->
+
+<div
+id="insightsContainer"
+
+style="
+margin-top:30px;
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+"
+>
+
+<h2>
+AI Insights
+</h2>
+
+<div id="insights"></div>
+
+</div>
+
+<form id="logForm">
+
+<input
+type="text"
+id="api_name"
+placeholder="API Name"
+required
+>
+
+<select id="status">
+
+<option value="success">
+success
+</option>
+
+<option value="failure">
+failure
+</option>
+
+</select>
+
+<select id="severity">
+
+<option value="INFO">
+INFO
+</option>
+
+<option value="WARNING">
+WARNING
+</option>
+
+<option value="ERROR">
+ERROR
+</option>
+
+<option value="CRITICAL">
+CRITICAL
+</option>
+
+</select>
+
+<input
+type="number"
+id="response_time"
+placeholder="Response Time"
+required
+>
+
+<button type="submit">
+Insert Log
+</button>
+
+</form>
+
+<br>
+
+<button onclick="simulateTraffic()">
+Generate Fake Traffic
+</button>
+
+<a href="/export/csv">
+<button>
+Download CSV Report
+</button>
+</a>
+
+<div class="charts">
+
+<img
+id="pieChart"
+src="/static/charts/pie.png"
+>
+
+<img
+id="barChart"
+src="/static/charts/bar.png"
+>
+
+<img
+id="lineChart"
+src="/static/charts/line.png"
+>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+<th>API</th>
+<th>Status</th>
+<th>Severity</th>
+<th>Response Time</th>
+<th>Timestamp</th>
+</tr>
+
+</thead>
+
+<tbody id="logsTable"></tbody>
+
+</table>
+
+</div>
+
+<script>
+
+async function loadAnalytics(){
+
+    const res =
+    await fetch("/analytics")
+
+    const data =
+    await res.json()
+
+    document
+    .getElementById("totalLogs")
+    .innerText =
+    data.total_logs
+
+    document
+    .getElementById("successRate")
+    .innerText =
+    data.success_rate + "%"
+
+    document
+    .getElementById("failureRate")
+    .innerText =
+    data.failure_rate + "%"
+
+    document
+    .getElementById("health")
+    .innerText =
+    data.system_health
+
+    let insightsHTML = ""
+
+data.insights.forEach(insight => {
+
+    insightsHTML += `
+
+    <div style="
+        background:#334155;
+        padding:12px;
+        margin-top:10px;
+        border-radius:8px;
+    ">
+
+        ⚠ ${insight}
+
+    </div>
+    `
+})
+
+document
+.getElementById("insights")
+.innerHTML = insightsHTML
+}
+
+async function loadLogs(){
+
+    const res =
+    await fetch("/logs")
+
+    const logs =
+    await res.json()
+
+    let rows = ""
+
+    logs.forEach(log => {
+
+        rows += `
+
+        <tr>
+
+        <td>${log.api_name}</td>
+
+        <td class="${
+            log.status
+        }">
+
+        ${log.status}
+
+        </td>
+
+        <td>${log.severity}</td>
+
+        <td>${log.response_time}</td>
+
+        <td>${log.timestamp}</td>
+
+        </tr>
+        `
+    })
+
+    document
+    .getElementById("logsTable")
+    .innerHTML = rows
+}
+
+document
+.getElementById("logForm")
+.addEventListener("submit",
+
+async(e)=>{
+
+    e.preventDefault()
+
+    const data = {
+
+        api_name:
+        document.getElementById(
+        "api_name").value,
+
+        status:
+        document.getElementById(
+        "status").value,
+
+        severity:
+        document.getElementById(
+        "severity").value,
+
+        response_time:
+        document.getElementById(
+        "response_time").value
+    }
+
+    await fetch("/log",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":
+            "application/json"
+        },
+
+        body:JSON.stringify(data)
+    })
+
+    location.reload()
+})
+
+async function simulateTraffic(){
+
+    await fetch("/simulate")
+
+    location.reload()
+}
+
+loadAnalytics()
+
+loadLogs()
+
+async function refreshCharts(){
+
+    await fetch("/charts")
+
+    const timestamp =
+    new Date().getTime()
+
+    document
+    .getElementById("pieChart")
+    .src =
+    "/static/charts/pie.png?t=" + timestamp
+
+    document
+    .getElementById("barChart")
+    .src =
+    "/static/charts/bar.png?t=" + timestamp
+
+    document
+    .getElementById("lineChart")
+    .src =
+    "/static/charts/line.png?t=" + timestamp
+}
+
+
+setInterval(()=>{
+
+    loadAnalytics()
+
+    loadLogs()
+
+    refreshCharts()
+
+},5000)
+
+</script>
+
+</body>
+</html>
