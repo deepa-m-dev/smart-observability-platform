@@ -291,6 +291,11 @@ This project evolved from a simple logging system into a mini real-time observab
 
 ---
 
+## 🚀 Live Demo
+[Click here to view project](https://smart-observability-platform.onrender.com)
+
+---
+
 # 👨‍💻 Author
 
 Deepa M
