@@ -4,7 +4,7 @@ from flask import (
     jsonify,
     send_file
 )
-from traffic_simulator import simulator
+from traffic_simulator import start_simulator, stop_simulator
 
 import random
 import pandas as pd
@@ -181,18 +181,13 @@ def export_csv():
 # SIMULATION START AND STOP
 # ----------------------------------------
 
-
 @logs_bp.route("/start-sim")
 def start_sim():
-
-    simulator.start()
-
+    start_simulator()
     return {"message": "Simulation started"}
 
 
 @logs_bp.route("/stop-sim")
 def stop_sim():
-
-    simulator.stop()
-
+    stop_simulator()
     return {"message": "Simulation stopped"}
