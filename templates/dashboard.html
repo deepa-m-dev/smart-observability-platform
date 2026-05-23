@@ -415,6 +415,21 @@ loadAnalytics()
 
 loadLogs()
 
+async function startSim() {
+
+    await fetch("/start-sim");
+
+    alert("Simulation started");
+}
+
+async function stopSim() {
+
+    await fetch("/stop-sim");
+
+    alert("Simulation stopped");
+}
+
+    
 async function refreshCharts(){
 
     await fetch("/charts")
