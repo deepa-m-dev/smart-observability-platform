@@ -10,10 +10,18 @@ html, body {
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #0b1220;
+    background: radial-gradient(circle at top, #0f172a, #020617);
     color: #e2e8f0;
 }
+.card {
+    background: rgba(17, 26, 46, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+}
 
+.card:hover {
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+}
 /* Container */
 .container {
     width: 90%;
