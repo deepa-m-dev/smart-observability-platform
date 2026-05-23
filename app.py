@@ -15,7 +15,7 @@ init_db()
 
 app.register_blueprint(logs_bp)
 
-start_simulator()
+#start_simulator()
 
 @app.route("/")
 def dashboard():
