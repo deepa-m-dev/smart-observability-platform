@@ -28,9 +28,15 @@ severities = [
 ]
 
 
+# 🔥 CONTROL FLAG (IMPORTANT FIX)
+running = False
+
+
 def generate_logs():
 
-    while True:
+    global running
+
+    while running:
 
         api = random.choice(apis)
 
@@ -39,10 +45,7 @@ def generate_logs():
             weights=[80, 20]
         )[0]
 
-        response_time = random.randint(
-            50,
-            1200
-        )
+        response_time = random.randint(50, 1200)
 
         severity = "INFO"
 
@@ -62,19 +65,30 @@ def generate_logs():
             response_time
         )
 
-        print(
-            f"Inserted: {api} | {status}"
-        )
+        print(f"Inserted: {api} | {status}")
 
         time.sleep(2)
 
 
 def start_simulator():
 
-    thread = threading.Thread(
-        target=generate_logs
-    )
+    global running
 
-    thread.daemon = True
+    if not running:
 
-    thread.start()
+        running = True
+
+        thread = threading.Thread(
+            target=generate_logs
+        )
+
+        thread.daemon = True
+
+        thread.start()
+
+
+def stop_simulator():
+
+    global running
+
+    running = False
