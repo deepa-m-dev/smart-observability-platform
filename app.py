@@ -13,10 +13,9 @@ app = Flask(__name__)
 
 init_db()
 
-start_simulator()
-
 app.register_blueprint(logs_bp)
 
+start_simulator()
 
 @app.route("/")
 def dashboard():
