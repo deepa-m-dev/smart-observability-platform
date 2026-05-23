@@ -4,7 +4,6 @@ import time
 
 from models import insert_log
 
-
 apis = [
     "/login",
     "/products",
@@ -15,29 +14,18 @@ apis = [
     "/analytics"
 ]
 
-statuses = [
-    "success",
-    "failure"
-]
+statuses = ["success", "failure"]
 
-severities = [
-    "INFO",
-    "WARNING",
-    "ERROR",
-    "CRITICAL"
-]
+severities = ["INFO", "WARNING", "ERROR", "CRITICAL"]
 
-
-# 🔥 CONTROL FLAG (IMPORTANT FIX)
+# Control flag
 running = False
 
 
 def generate_logs():
-
     global running
 
     while running:
-
         api = random.choice(apis)
 
         status = random.choices(
@@ -47,48 +35,34 @@ def generate_logs():
 
         response_time = random.randint(50, 1200)
 
-        severity = "INFO"
-
+        # severity logic
         if response_time > 800:
             severity = "CRITICAL"
-
         elif response_time > 500:
             severity = "ERROR"
-
         elif response_time > 300:
             severity = "WARNING"
+        else:
+            severity = "INFO"
 
-        insert_log(
-            api,
-            status,
-            severity,
-            response_time
-        )
+        insert_log(api, status, severity, response_time)
 
-        print(f"Inserted: {api} | {status}")
+        print(f"Inserted: {api} | {status} | {response_time}ms")
 
         time.sleep(2)
 
 
 def start_simulator():
-
     global running
 
     if not running:
-
         running = True
 
-        thread = threading.Thread(
-            target=generate_logs
-        )
-
+        thread = threading.Thread(target=generate_logs)
         thread.daemon = True
-
         thread.start()
 
 
 def stop_simulator():
-
     global running
-
     running = False
