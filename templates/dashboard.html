@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
-
+    
+<link rel="stylesheet" href="/static/style.css">
+    
 <meta charset="UTF-8">
 
 <meta name="viewport"
@@ -12,150 +14,6 @@ content="width=device-width, initial-scale=1.0">
 Smart Observability Dashboard
 </title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0b1220;
-    color: #e2e8f0;
-}
-
-/* Container */
-.container {
-    width: 90%;
-    margin: auto;
-}
-
-/* Title */
-h1 {
-    text-align: center;
-    padding: 20px;
-    color: #38bdf8;
-    letter-spacing: 1px;
-}
-
-/* Cards */
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
-
-.card {
-    background: #111a2e;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    border: 1px solid #1f2a44;
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    border-color: #38bdf8;
-}
-
-.card h2 {
-    color: #38bdf8;
-}
-
-/* Form */
-form {
-    margin-top: 30px;
-    background: #111a2e;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #1f2a44;
-}
-
-input, select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 8px;
-    border: 1px solid #2b3a5c;
-    background: #0b1220;
-    color: #e2e8f0;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    background: linear-gradient(90deg, #14b8a6, #22c55e);
-    border: none;
-    color: white;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
-}
-
-/* Charts */
-.charts {
-    margin-top: 30px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.charts img {
-    width: 100%;
-    border-radius: 12px;
-    border: 1px solid #1f2a44;
-}
-
-/* Table */
-table {
-    width: 100%;
-    margin-top: 30px;
-    border-collapse: collapse;
-    background: #111a2e;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-th, td {
-    padding: 12px;
-    border-bottom: 1px solid #1f2a44;
-    text-align: center;
-}
-
-th {
-    background: #0f172a;
-    color: #38bdf8;
-}
-
-.success {
-    color: #22c55e;
-    font-weight: bold;
-}
-
-.failure {
-    color: #ef4444;
-    font-weight: bold;
-}
-
-/* Insights */
-#insightsContainer {
-    background: #111a2e;
-    border: 1px solid #1f2a44;
-}
-
-#insights div {
-    background: #0b1220;
-    border: 1px solid #1f2a44;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 8px;
-}
-
-</style>
 
 </head>
 
