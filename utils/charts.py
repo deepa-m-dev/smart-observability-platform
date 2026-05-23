@@ -12,12 +12,11 @@ from database import get_connection
 BASE_DIR = os.path.dirname(
     os.path.abspath(__file__)
 )
+PROJECT_ROOT = os.path.dirname(BASE_DIR)
 
-CHART_DIR = os.path.join(
-    os.path.dirname(BASE_DIR),
-    "static",
-    "charts"
-)
+CHART_DIR = os.path.join(PROJECT_ROOT, "static", "charts")
+
+os.makedirs(CHART_DIR, exist_ok=True)
 
 
 def create_charts():
